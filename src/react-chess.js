@@ -1,10 +1,12 @@
 const React = require('react')
 const PropTypes = require('prop-types')
 const Draggable = require('react-draggable')
+const resizeAware = require('react-resize-aware')
 const defaultLineup = require('./defaultLineup')
 const pieceComponents = require('./pieces')
 const decode = require('./decode')
 
+const ResizeAware = resizeAware.default || resizeAware
 const getDefaultLineup = () => defaultLineup.slice()
 const noop = () => {
   /* intentional noop */
@@ -22,8 +24,9 @@ class Chess extends React.Component {
     this.els = {}
     this.state = {scaleFactor: 1}
     this.setBoardRef = el => (this.els.board = el)
-    this.onDragStart = this.onDragStart.bind(this)
-    this.onDragStop = this.onDragStop.bind(this)
+    this.handleDragStart = this.handleDragStart.bind(this)
+    this.handleDragStop = this.handleDragStop.bind(this)
+    this.handleResize = this.handleResize.bind(this)
   }
 
   getSquareColor(x, y) {
@@ -41,7 +44,11 @@ class Chess extends React.Component {
     const boardSize = this.els.board.clientWidth
     const tileSize = boardSize / 8
     this.setState({boardSize, tileSize})
-    // @todo handle resize events
+  }
+
+  handleResize(size) {
+    const tileSize = size.width / 8
+    this.setState({boardSize: size.width, tileSize})
   }
 
   coordsToPosition(coords) {
@@ -54,7 +61,7 @@ class Chess extends React.Component {
     }
   }
 
-  onDragStart(evt, drag) {
+  handleDragStart(evt, drag) {
     evt.stopPropagation()
     evt.preventDefault()
     const node = drag.node
@@ -62,7 +69,7 @@ class Chess extends React.Component {
     this.setState({dragFrom})
   }
 
-  onDragStop(evt, drag) {
+  handleDragStop(evt, drag) {
     const {dragFrom} = this.state
     const node = drag.node
     const dragTo = this.coordsToPosition({x: node.offsetLeft + drag.x, y: node.offsetTop + drag.y})
@@ -133,8 +140,8 @@ class Chess extends React.Component {
       return (
         <Draggable
           bounds="parent"
-          onStart={this.onDragStart}
-          onStop={this.onDragStop}
+          onStart={this.handleDragStart}
+          onStop={this.handleDragStop}
           key={`${piece}-${x}-${y}`}>
           <Piece x={x} y={y} />
         </Draggable>
@@ -145,9 +152,13 @@ class Chess extends React.Component {
     const boardStyles = {position: 'relative', overflow: 'hidden', height: this.state.boardSize}
 
     return (
-      <div ref={this.setBoardRef} style={boardStyles}>
+      <ResizeAware
+        ref={this.setBoardRef}
+        onlyEvent
+        onResize={this.handleResize}
+        style={boardStyles}>
         {children}
-      </div>
+      </ResizeAware>
     )
   }
 }
