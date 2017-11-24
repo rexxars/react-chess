@@ -1,0 +1,11 @@
+.page-header {
+  color: #fff;
+  background: #191818;
+  margin: 0;
+  padding: 10px 20px;
+}
+
+#main {
+  width: 60%;
+  margin: 50px auto;
+}
