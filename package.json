@@ -36,7 +36,8 @@
     "staticpath": "demo/dist"
   },
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.0",
+    "react-draggable": "^3.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

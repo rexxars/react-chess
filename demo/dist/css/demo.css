@@ -6,6 +6,6 @@
 }
 
 #main {
-  width: 60%;
-  margin: 50px auto;
+  max-width: 90vmin;
+  margin: 1vmin auto;
 }

@@ -6,5 +6,11 @@ module.exports = {
     const x = square.toLowerCase().charCodeAt(0) - charCodeOffset
     const y = Number(square[1]) - 1
     return {x, y, piece}
-  }
+  },
+
+  positionFromPixels: (pos, scale) => {
+    //const {x, y} = pos
+  },
+
+  charCodeOffset
 }
