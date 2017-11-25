@@ -11,11 +11,16 @@ class Demo extends React.PureComponent {
   }
 
   handleMovePiece(piece, fromSquare, toSquare) {
-    console.log('moved', piece, 'from ', fromSquare, 'to', toSquare)
-    console.log('piece was at index', piece.index)
-
-    const newPieces = this.state.pieces.slice()
-    newPieces[piece.index] = `${piece.name}@${toSquare}`
+    const newPieces = this.state.pieces
+      .map((curr, index) => {
+        if (piece.index === index) {
+          return `${piece.name}@${toSquare}`
+        } else if (curr.indexOf(`@${toSquare}`) !== -1) {
+          return false // To be removed from the board
+        }
+        return curr
+      })
+      .filter(Boolean)
 
     this.setState({pieces: newPieces})
   }

@@ -12,8 +12,8 @@ const noop = () => {
   /* intentional noop */
 }
 
-const yLabelStyles = {position: 'absolute', top: '5%', left: '5%'}
-const xLabelStyles = {position: 'absolute', bottom: '5%', right: '5%'}
+const yLabelStyles = {fontSize: 'calc(7px + .5vw)', position: 'absolute', top: '5%', left: '5%'}
+const xLabelStyles = {fontSize: 'calc(7px + .5vw)', position: 'absolute', bottom: '5%', right: '5%'}
 const square = 100 / 8
 const squareSize = `${square}%`
 
@@ -22,10 +22,11 @@ class Chess extends React.Component {
     super(...args)
 
     this.els = {}
-    this.state = {scaleFactor: 1}
+    this.state = {}
     this.setBoardRef = el => (this.els.board = el)
     this.handleDragStart = this.handleDragStart.bind(this)
     this.handleDragStop = this.handleDragStop.bind(this)
+    this.handleDrag = this.handleDrag.bind(this)
     this.handleResize = this.handleResize.bind(this)
   }
 
@@ -57,33 +58,55 @@ class Chess extends React.Component {
     return {
       x,
       y,
-      pos: `${String.fromCharCode(decode.charCodeOffset + x)}${7 - y + 1}`
+      pos: `${String.fromCharCode(decode.charCodeOffset + x)}${8 - y}`
+    }
+  }
+
+  handleDrag(evt, drag) {
+    if (!this.props.highlightTarget) {
+      return
+    }
+
+    const {targetTile} = this.state
+    const {x, y} = this.coordsToPosition({
+      x: drag.node.offsetLeft + drag.x,
+      y: drag.node.offsetTop + drag.y
+    })
+
+    if (!targetTile || targetTile.x !== x || targetTile.y !== y) {
+      this.setState({targetTile: {x, y}})
     }
   }
 
   handleDragStart(evt, drag) {
-    evt.stopPropagation()
-    evt.preventDefault()
     const node = drag.node
     const dragFrom = this.coordsToPosition({x: node.offsetLeft, y: node.offsetTop})
-    this.setState({dragFrom})
+    this.setState({dragFrom, draggingPiece: this.findPieceAtPosition(dragFrom.pos)})
   }
 
   handleDragStop(evt, drag) {
-    const {dragFrom} = this.state
     const node = drag.node
+    const {dragFrom, draggingPiece} = this.state
     const dragTo = this.coordsToPosition({x: node.offsetLeft + drag.x, y: node.offsetTop + drag.y})
-    const piece = this.findPieceAtPosition(dragFrom.pos)
 
-    this.props.onMovePiece(piece, dragFrom.pos, dragTo.pos)
-    this.setState({dragFrom: null})
+    this.setState({dragFrom: null, targetTile: null})
+
+    if (dragFrom.pos === dragTo.pos) {
+      console.log('meh')
+      return
+    }
+
+    // "next tick"
+    setTimeout(() => {
+      this.props.onMovePiece(draggingPiece, dragFrom.pos, dragTo.pos)
+    }, 10)
   }
 
   findPieceAtPosition(pos) {
     for (let i = 0; i < this.props.pieces.length; i++) {
       const piece = this.props.pieces[i]
       if (piece.indexOf(pos) === 2) {
-        return {notation: piece, name: piece.slice(0, 1), index: i}
+        return {notation: piece, name: piece.slice(0, 1), index: i, position: pos}
       }
     }
 
@@ -114,16 +137,20 @@ class Chess extends React.Component {
   }
 
   render() {
+    const {targetTile, boardSize} = this.state
+
     const tiles = []
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 8; x++) {
+        const isTarget = targetTile && targetTile.x === x && targetTile.y === y
         const fill = this.getSquareColor(x, y)
         const styles = {
           width: squareSize,
           paddingBottom: squareSize,
           background: fill,
           float: 'left',
-          position: 'relative'
+          position: 'relative',
+          boxShadow: isTarget ? 'inset 0px 0px 0px 0.4vmin yellow' : undefined
         }
 
         tiles.push(
@@ -141,6 +168,7 @@ class Chess extends React.Component {
         <Draggable
           bounds="parent"
           onStart={this.handleDragStart}
+          onDrag={this.handleDrag}
           onStop={this.handleDragStop}
           key={`${piece}-${x}-${y}`}>
           <Piece x={x} y={y} />
@@ -149,7 +177,7 @@ class Chess extends React.Component {
     })
 
     const children = tiles.concat(pieces)
-    const boardStyles = {position: 'relative', overflow: 'hidden', height: this.state.boardSize}
+    const boardStyles = {position: 'relative', overflow: 'hidden', height: boardSize}
 
     return (
       <ResizeAware
@@ -164,6 +192,7 @@ class Chess extends React.Component {
 }
 
 Chess.propTypes = {
+  highlightTarget: PropTypes.bool,
   drawLabels: PropTypes.bool,
   lightSquareColor: PropTypes.string,
   darkSquareColor: PropTypes.string,
@@ -172,6 +201,7 @@ Chess.propTypes = {
 }
 
 Chess.defaultProps = {
+  highlightTarget: true,
   drawLabels: true,
   onMovePiece: noop,
   lightSquareColor: '#f0d9b5',
