@@ -1,3 +1,5 @@
+<img align="right" width="270" height="270" src="assets/react-chess.png" alt="react-chess">
+
 # react-chess
 
 [![npm version](http://img.shields.io/npm/v/react-chess.svg?style=flat-square)](http://browsenpm.org/package/react-chess)[![Build Status](http://img.shields.io/travis/rexxars/react-chess/master.svg?style=flat-square)](https://travis-ci.org/rexxars/react-chess)
