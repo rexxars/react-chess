@@ -12,6 +12,10 @@ Renders a chess board using React
 npm install --save react-chess
 ```
 
+## Demo
+
+- [Basic but functional demo](https://rexxars.github.io/react-chess/)
+
 ## Usage
 
 ### Default lineup, movable pieces
