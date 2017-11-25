@@ -2,7 +2,7 @@
 const React = require('react')
 
 module.exports = Piece => props => {
-  const {onMouseDown, onMouseUp, onTouchEnd, onTouchStart, style} = props
+  const {onMouseDown, onMouseUp, onTouchEnd, onTouchStart, style, isMoving} = props
   const y = 7 - props.y
 
   const styles = Object.assign({}, style, {
@@ -11,7 +11,8 @@ module.exports = Piece => props => {
     top: `${y * 12.5}%`,
     width: '12.5%',
     height: '12.5%',
-    textAlign: 'center'
+    textAlign: 'center',
+    zIndex: isMoving ? 1000 : undefined
   })
 
   return (
