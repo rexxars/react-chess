@@ -89,6 +89,8 @@ class Chess extends React.Component {
   }
 
   handleDragStart(evt, drag) {
+    evt.preventDefault()
+
     if (!this.props.allowMoves) {
       return false
     }
