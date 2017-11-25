@@ -12,10 +12,20 @@ const noop = () => {
   /* intentional noop */
 }
 
-const yLabelStyles = {fontSize: 'calc(7px + .5vw)', position: 'absolute', top: '5%', left: '5%'}
-const xLabelStyles = {fontSize: 'calc(7px + .5vw)', position: 'absolute', bottom: '5%', right: '5%'}
 const square = 100 / 8
 const squareSize = `${square}%`
+
+const squareStyles = {
+  width: squareSize,
+  paddingBottom: squareSize,
+  float: 'left',
+  position: 'relative',
+  pointerEvents: 'none'
+}
+
+const labelStyles = {fontSize: 'calc(7px + .5vw)', position: 'absolute', userSelect: 'none'}
+const yLabelStyles = Object.assign({top: '5%', left: '5%'}, labelStyles)
+const xLabelStyles = Object.assign({bottom: '5%', right: '5%'}, labelStyles)
 
 class Chess extends React.Component {
   constructor(...args) {
@@ -144,15 +154,9 @@ class Chess extends React.Component {
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 8; x++) {
         const isTarget = targetTile && targetTile.x === x && targetTile.y === y
-        const fill = this.getSquareColor(x, y)
-        const styles = {
-          width: squareSize,
-          paddingBottom: squareSize,
-          background: fill,
-          float: 'left',
-          position: 'relative',
-          boxShadow: isTarget ? 'inset 0px 0px 0px 0.4vmin yellow' : undefined
-        }
+        const background = this.getSquareColor(x, y)
+        const boxShadow = isTarget ? 'inset 0px 0px 0px 0.4vmin yellow' : undefined
+        const styles = Object.assign({background, boxShadow}, squareStyles)
 
         tiles.push(
           <div key={`rect-${x}-${y}`} style={styles}>
@@ -172,7 +176,7 @@ class Chess extends React.Component {
           onStart={this.handleDragStart}
           onDrag={this.handleDrag}
           onStop={this.handleDragStop}
-          key={`${piece}-${x}-${y}`}>
+          key={`${piece}-${x}-${y}-${reset ? 'y' : 'n'}`}>
           <Piece reset={reset} x={x} y={y} />
         </Draggable>
       )
