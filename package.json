@@ -1,7 +1,7 @@
 {
   "name": "react-chess",
   "description": "Renders a chess board using React",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "keywords": [
     "chess",
     "board",
