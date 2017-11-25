@@ -18,6 +18,18 @@ module.exports = {
       commonjs: 'react',
       commonjs2: 'react',
       amd: 'react'
+    },
+    'react-dom': {
+      root: 'ReactDOM',
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'react-dom'
+    },
+    'prop-types': {
+      root: 'React.PropTypes',
+      commonjs: 'prop-types',
+      commonjs2: 'prop-types',
+      amd: 'prop-types'
     }
   },
   module: {
