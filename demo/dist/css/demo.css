@@ -1,3 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
 .page-header {
   color: #fff;
   background: #191818;
@@ -5,7 +14,23 @@
   padding: 10px 20px;
 }
 
+.github-link {
+  float: right;
+}
+
+.github-link svg {
+  height: 45px;
+  margin: 5px;
+}
+
 #main {
   max-width: 90vmin;
   margin: 1vmin auto;
+}
+
+@media only screen and (max-width: 768px) {
+  #main {
+    max-width: initial;
+    margin: 0;
+  }
 }

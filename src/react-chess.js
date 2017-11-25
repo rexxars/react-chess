@@ -89,9 +89,14 @@ class Chess extends React.Component {
   }
 
   handleDragStart(evt, drag) {
+    if (!this.props.allowMoves) {
+      return false
+    }
+
     const node = drag.node
     const dragFrom = this.coordsToPosition({x: node.offsetLeft, y: node.offsetTop})
     this.setState({dragFrom, draggingPiece: this.findPieceAtPosition(dragFrom.pos), reset: null})
+    return evt
   }
 
   handleDragStop(evt, drag) {
@@ -183,7 +188,7 @@ class Chess extends React.Component {
     })
 
     const children = tiles.concat(pieces)
-    const boardStyles = {position: 'relative', overflow: 'hidden', height: boardSize}
+    const boardStyles = {position: 'relative', overflow: 'hidden', width: '100%', height: boardSize}
 
     return (
       <ResizeAware
@@ -198,6 +203,7 @@ class Chess extends React.Component {
 }
 
 Chess.propTypes = {
+  allowMoves: PropTypes.bool,
   highlightTarget: PropTypes.bool,
   drawLabels: PropTypes.bool,
   lightSquareColor: PropTypes.string,
@@ -207,6 +213,7 @@ Chess.propTypes = {
 }
 
 Chess.defaultProps = {
+  allowMoves: true,
   highlightTarget: true,
   drawLabels: true,
   onMovePiece: noop,
