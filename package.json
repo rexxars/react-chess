@@ -2,16 +2,12 @@
   "name": "react-chess",
   "description": "Renders a chess board using React",
   "version": "1.0.5",
-  "keywords": [
-    "chess",
-    "board",
-    "react",
-    "react-component"
-  ],
+  "keywords": ["chess", "board", "react", "react-component"],
   "main": "lib/react-chess.js",
   "unpkg": "umd/react-chess.js",
   "scripts": {
-    "build": "npm run clean && npm run compile && NODE_ENV=production webpack -p && npm run build:demo",
+    "build":
+      "npm run clean && npm run compile && NODE_ENV=production webpack -p && npm run build:demo",
     "build:demo": "NODE_ENV=production webpack -p --config webpack.config.demo.js",
     "clean": "rimraf lib/ demo/dist/js/",
     "compile": "babel --copy-files -d lib/ src/",
@@ -20,7 +16,7 @@
     "prepublishOnly": "npm run qa",
     "qa": "npm test && npm run build",
     "test": "jest --coverage",
-    "watch": "webpack --watch",
+    "watch": "babel --watch --copy-file -d lib/ src/",
     "watch:demo": "webpack --watch --config webpack.config.demo.js"
   },
   "repository": {
@@ -31,9 +27,7 @@
   "license": "MIT",
   "gh-pages-deploy": {
     "noprompt": true,
-    "prep": [
-      "build"
-    ],
+    "prep": ["build"],
     "staticpath": "demo/dist"
   },
   "dependencies": {
@@ -68,8 +62,6 @@
     "verbose": true,
     "testEnvironment": "node",
     "coverageDirectory": "coverage",
-    "collectCoverageFrom": [
-      "src/**.js"
-    ]
+    "collectCoverageFrom": ["src/**.js"]
   }
 }
