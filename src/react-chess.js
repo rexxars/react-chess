@@ -153,7 +153,7 @@ class Chess extends React.Component {
   }
 
   render() {
-    const {targetTile, boardSize} = this.state
+    const {targetTile, draggingPiece, boardSize} = this.state
 
     const tiles = []
     for (let y = 0; y < 8; y++) {
@@ -172,6 +172,7 @@ class Chess extends React.Component {
     }
 
     const pieces = this.props.pieces.map((decl, i) => {
+      const isMoving = draggingPiece && i === draggingPiece.index
       const reset = this.state.reset === decl
       const {x, y, piece} = decode.fromPieceDecl(decl)
       const Piece = pieceComponents[piece]
@@ -182,7 +183,7 @@ class Chess extends React.Component {
           onDrag={this.handleDrag}
           onStop={this.handleDragStop}
           key={`${piece}-${x}-${y}-${reset ? 'y' : 'n'}`}>
-          <Piece reset={reset} x={x} y={y} />
+          <Piece isMoving={isMoving} reset={reset} x={x} y={y} />
         </Draggable>
       )
     })
