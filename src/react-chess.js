@@ -101,20 +101,24 @@ class Chess extends React.Component {
     return evt
   }
 
+  componentDidUpdate() {
+    if (this.state.reset) {
+      this.setState({reset: null})
+    }
+  }
+
   handleDragStop(evt, drag) {
     const node = drag.node
     const {dragFrom, draggingPiece} = this.state
     const dragTo = this.coordsToPosition({x: node.offsetLeft + drag.x, y: node.offsetTop + drag.y})
 
-    this.setState({dragFrom: null, targetTile: null, draggingPiece: null})
-
     // Snap back to original position if drag failed
-    if (dragFrom.pos === dragTo.pos) {
-      this.setState({reset: draggingPiece.notation})
-      return
-    }
+    const reset = dragFrom.pos === dragTo.pos && draggingPiece.notation
+    this.setState(() => ({dragFrom: null, targetTile: null, draggingPiece: null, reset}))
 
-    this.props.onMovePiece(draggingPiece, dragFrom.pos, dragTo.pos)
+    if (!reset) {
+      this.props.onMovePiece(draggingPiece, dragFrom.pos, dragTo.pos)
+    }
   }
 
   findPieceAtPosition(pos) {
