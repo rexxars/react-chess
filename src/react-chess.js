@@ -97,7 +97,7 @@ class Chess extends React.Component {
       return
     }
 
-    // "next tick"
+    // "next tick", prevents setState errors in draggable internals (we might remove the piece from the DOM)
     setTimeout(() => {
       this.props.onMovePiece(draggingPiece, dragFrom.pos, dragTo.pos)
     }, 10)
