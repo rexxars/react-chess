@@ -81,7 +81,7 @@ class Chess extends React.Component {
   handleDragStart(evt, drag) {
     const node = drag.node
     const dragFrom = this.coordsToPosition({x: node.offsetLeft, y: node.offsetTop})
-    this.setState({dragFrom, draggingPiece: this.findPieceAtPosition(dragFrom.pos)})
+    this.setState({dragFrom, draggingPiece: this.findPieceAtPosition(dragFrom.pos), reset: null})
   }
 
   handleDragStop(evt, drag) {
@@ -89,10 +89,11 @@ class Chess extends React.Component {
     const {dragFrom, draggingPiece} = this.state
     const dragTo = this.coordsToPosition({x: node.offsetLeft + drag.x, y: node.offsetTop + drag.y})
 
-    this.setState({dragFrom: null, targetTile: null})
+    this.setState({dragFrom: null, targetTile: null, draggingPiece: null})
 
+    // Snap back to original position if drag failed
     if (dragFrom.pos === dragTo.pos) {
-      console.log('meh')
+      this.setState({reset: draggingPiece.notation})
       return
     }
 
@@ -162,6 +163,7 @@ class Chess extends React.Component {
     }
 
     const pieces = this.props.pieces.map((decl, i) => {
+      const reset = this.state.reset === decl
       const {x, y, piece} = decode.fromPieceDecl(decl)
       const Piece = pieceComponents[piece]
       return (
@@ -171,7 +173,7 @@ class Chess extends React.Component {
           onDrag={this.handleDrag}
           onStop={this.handleDragStop}
           key={`${piece}-${x}-${y}`}>
-          <Piece x={x} y={y} />
+          <Piece reset={reset} x={x} y={y} />
         </Draggable>
       )
     })

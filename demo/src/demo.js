@@ -15,7 +15,7 @@ class Demo extends React.PureComponent {
       .map((curr, index) => {
         if (piece.index === index) {
           return `${piece.name}@${toSquare}`
-        } else if (curr.indexOf(`@${toSquare}`) !== -1) {
+        } else if (curr.indexOf(toSquare) === 2) {
           return false // To be removed from the board
         }
         return curr
