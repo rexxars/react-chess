@@ -110,7 +110,10 @@ class Chess extends React.Component {
 
     if (dragFrom.pos !== dragTo.pos) {
       this.props.onMovePiece(draggingPiece, dragFrom.pos, dragTo.pos)
+      return false
     }
+
+    return true
   }
 
   findPieceAtPosition(pos) {

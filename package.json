@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run qa",
     "qa": "npm test && npm run build",
     "test": "jest --coverage",
-    "watch": "babel --watch --copy-file -d lib/ src/",
+    "watch": "babel --watch --copy-files -d lib/ src/",
     "watch:demo": "webpack --watch --config webpack.config.demo.js"
   },
   "repository": {
