@@ -26,6 +26,7 @@
     "type": "git",
     "url": "git@github.com:rexxars/react-chess.git"
   },
+  "homepage" : "https://rexxars.github.io/react-chess/",
   "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
   "license": "MIT",
   "gh-pages-deploy": {

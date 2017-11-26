@@ -33,4 +33,4 @@ umd
 lib
 
 # Compiled demo
-demo/dist/js
+build/
