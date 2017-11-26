@@ -14,7 +14,7 @@ npm install --save react-chess
 
 ## Demo
 
-- [Basic but functional demo](https://rexxars.github.io/react-chess/)
+* [Basic but functional demo](https://rexxars.github.io/react-chess/)
 
 ## Usage
 
@@ -56,6 +56,9 @@ ReactDOM.render(<Chess pieces={lineup} />, document.getElementById('main'))
     (`h1`), `index` (index in `pieces` array)
   * `fromSquare` - _string_ Previous square position
   * `toSquare` - _string_ New square position
+* `onDragStart` - _function_ Function that is called when a piece starts to move. Receives same
+  arguments as `onMovePiece` except `toSquare`. Returning `false` from this function will prevent
+  the dragging from happening.
 
 ## License
 

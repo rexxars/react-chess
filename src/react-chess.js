@@ -97,7 +97,12 @@ class Chess extends React.Component {
 
     const node = drag.node
     const dragFrom = this.coordsToPosition({x: node.offsetLeft, y: node.offsetTop})
-    this.setState({dragFrom, draggingPiece: this.findPieceAtPosition(dragFrom.pos)})
+    const draggingPiece = this.findPieceAtPosition(dragFrom.pos)
+    if (this.props.onDragStart(draggingPiece, dragFrom.pos) === false) {
+      return false
+    }
+
+    this.setState({dragFrom, draggingPiece})
     return evt
   }
 
@@ -208,6 +213,7 @@ Chess.propTypes = {
   lightSquareColor: PropTypes.string,
   darkSquareColor: PropTypes.string,
   onMovePiece: PropTypes.func,
+  onDragStart: PropTypes.func,
   pieces: PropTypes.arrayOf(PropTypes.string)
 }
 
@@ -216,6 +222,7 @@ Chess.defaultProps = {
   highlightTarget: true,
   drawLabels: true,
   onMovePiece: noop,
+  onDragStart: noop,
   lightSquareColor: '#f0d9b5',
   darkSquareColor: '#b58863',
   pieces: getDefaultLineup()
