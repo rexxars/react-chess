@@ -1,6 +1,7 @@
 const React = require('react')
-const ReactDOM = require('react-dom')
 const Chess = require('../../src/react-chess')
+
+require('./demo.css')
 
 class Demo extends React.PureComponent {
   constructor(props) {
@@ -33,10 +34,6 @@ class Demo extends React.PureComponent {
       </div>
     )
   }
-}
-
-if (typeof window !== 'undefined') {
-  ReactDOM.render(<Demo />, document.getElementById('main'))
 }
 
 module.exports = Demo

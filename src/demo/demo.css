@@ -23,13 +23,13 @@ body {
   margin: 5px;
 }
 
-#main {
+#root {
   max-width: 90vmin;
   margin: 1vmin auto;
 }
 
 @media only screen and (max-width: 768px) {
-  #main {
+  #root {
     max-width: initial;
     margin: 0;
   }
