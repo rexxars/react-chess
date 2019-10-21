@@ -38,6 +38,7 @@ class Chess extends React.Component {
     this.handleDragStop = this.handleDragStop.bind(this)
     this.handleDrag = this.handleDrag.bind(this)
     this.handleResize = this.handleResize.bind(this)
+    this.handleBoardClick = this.handleBoardClick.bind(this)
   }
 
   getSquareColor(x, y) {
@@ -121,6 +122,27 @@ class Chess extends React.Component {
     return true
   }
 
+  handleBoardClick(event) {
+    const clickedTile = this.coordsToPosition({
+      x: event.clientX - this.els.board.container.offsetLeft - this.state.tileSize / 2, 
+      y: event.clientY - this.els.board.container.offsetTop - this.state.tileSize / 2
+    })
+
+    if (!this.state.clickedTile && this.findPieceAtPosition(clickedTile.pos)) {
+      this.setState({
+        targetTile: {x: clickedTile.x, y: clickedTile.y, pos: clickedTile.pos},
+        clickedTile: {x: clickedTile.x, y: clickedTile.y, pos: clickedTile.pos}
+      })
+    } else if (this.state.clickedTile) {
+      const movingPiece = this.findPieceAtPosition(this.state.clickedTile.pos);
+      this.props.onMovePiece(movingPiece, this.state.clickedTile.pos, clickedTile.pos)
+      this.setState({
+        targetTile: {x: null, y: null, pos: null},
+        clickedTile: null
+      })
+    }
+  }
+
   findPieceAtPosition(pos) {
     for (let i = 0; i < this.props.pieces.length; i++) {
       const piece = this.props.pieces[i]
@@ -199,6 +221,7 @@ class Chess extends React.Component {
         ref={this.setBoardRef}
         onlyEvent
         onResize={this.handleResize}
+        onClick={this.handleBoardClick}
         style={boardStyles}>
         {children}
       </ResizeAware>
