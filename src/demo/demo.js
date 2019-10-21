@@ -14,9 +14,9 @@ class Demo extends React.PureComponent {
   handleMovePiece(piece, fromSquare, toSquare) {
     const newPieces = this.state.pieces
       .map((curr, index) => {
-        if (piece.index === index) {
+        if (piece && piece.index === index) {
           return `${piece.name}@${toSquare}`
-        } else if (curr.indexOf(toSquare) === 2) {
+        } else if (piece && curr.indexOf(toSquare) === 2) {
           return false // To be removed from the board
         }
         return curr
